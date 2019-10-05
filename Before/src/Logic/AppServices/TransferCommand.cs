@@ -8,7 +8,6 @@ using System.Text;
 
 namespace Logic.AppServices
 {
-    [AuditLog]
     public sealed class TransferCommand : ICommand
     {
         public long Id { get; }
@@ -24,6 +23,7 @@ namespace Logic.AppServices
             EnrollmentNumber = enrollmentNumber;
         }
 
+        [AuditLog]
         internal sealed class TransferCommandHandler : ICommandHandler<TransferCommand>
         {
             private readonly SessionFactory _sessionFactory;

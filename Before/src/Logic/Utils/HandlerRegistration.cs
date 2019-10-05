@@ -45,7 +45,7 @@ namespace Logic.Utils
             List<ConstructorInfo> ctors = pipeline
                 .Select(x =>
                 {
-                    Type t = x.IsGenericType ? x.MakeGenericType(interfaceType.GetType()) : x;
+                    Type t = x.IsGenericType ? x.MakeGenericType(interfaceType.GenericTypeArguments) : x;
                     return t.GetConstructors().Single();
                 })
                 .ToList();
@@ -83,7 +83,7 @@ namespace Logic.Utils
 
         private static object GetParameter(ParameterInfo parameterInfo, object current, IServiceProvider provider)
         {
-            Type parameterType = parameterInfo.GetType();
+            Type parameterType = parameterInfo.ParameterType;
 
             if (IsHandlerInterface(parameterType))
                 return current;

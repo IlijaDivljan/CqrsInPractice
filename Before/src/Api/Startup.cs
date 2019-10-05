@@ -26,7 +26,10 @@ namespace Api
             var config = new Config(3);
             services.AddSingleton(config);
 
-            services.AddSingleton(new SessionFactory(Configuration["ConnectionString"]));
+            var connectionString = new ConnectionString(Configuration["ConnectionString"]);
+            services.AddSingleton(connectionString);
+
+            services.AddSingleton<SessionFactory>();
             services.AddSingleton<Messages>();
 
             //services.AddTransient<ICommandHandler<EditPersonalInfoCommand>>(provider =>
@@ -38,7 +41,7 @@ namespace Api
             //services.AddTransient<ICommandHandler<EnrollCommand>, EnrollCommandHandler>();
             //services.AddTransient<ICommandHandler<TransferCommand>, TransferCommandHandler>();
             //services.AddTransient<ICommandHandler<DisenrollCommand>, DisenrollCommandHandler>();
-            
+
             //This should be last because it might need other services registered before.
             services.AddHandlers();
         }

@@ -13,16 +13,10 @@ namespace Api.Controllers
     [Route("api/students")]
     public sealed class StudentController : BaseController
     {
-        private readonly UnitOfWork _unitOfWork;
         private readonly Messages _messages;
-        private readonly StudentRepository _studentRepository;
-        private readonly CourseRepository _courseRepository;
 
-        public StudentController(UnitOfWork unitOfWork, Messages messages)
+        public StudentController(Messages messages)
         {
-            _unitOfWork = unitOfWork;
-            _studentRepository = new StudentRepository(unitOfWork);
-            _courseRepository = new CourseRepository(unitOfWork);
             _messages = messages;
         }
 
@@ -58,10 +52,10 @@ namespace Api.Controllers
             return FromResult(result);
         }
 
-        [HttpPost("{id}/enrollments/{enrollmentNumber}")]
+        [HttpPut("{id}/enrollments/{enrollmentNumber}")]
         public IActionResult Transfer(long id, int enrollmentNumber, [FromBody] StudentTransferDto dto)
         {
-            TransferCommand command = new TransferCommand(id, dto.Course, dto.Grade, enrollmentNumber);
+            TransferCommand command = new TransferCommand(id, dto.Course, dto.Grade, enrollmentNumber - 1);
             Result result = _messages.Dispatch(command);
             return FromResult(result);
         }
@@ -74,7 +68,7 @@ namespace Api.Controllers
             return FromResult(result);
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdatePersonalInfo(long id, [FromBody] StudentPersonalInfoDto dto)
         {
             EditPersonalInfoCommand command = new EditPersonalInfoCommand(id, dto.Name, dto.Email);

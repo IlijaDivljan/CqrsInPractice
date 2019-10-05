@@ -8,7 +8,6 @@ using System.Text;
 
 namespace Logic.AppServices
 {
-    [AuditLog]
     public sealed class RegisterCommand : ICommand
     {
         public string Name { get; }
@@ -28,6 +27,7 @@ namespace Logic.AppServices
             Course2Grade = course2Grade;
         }
 
+        [AuditLog]
         internal sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand>
         {
             private readonly SessionFactory _sessionFactory;
